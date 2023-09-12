@@ -1,0 +1,2 @@
+SELECT autor, COUNT(*) AS numero_de_livros FROM livros
+GROUP BY autor;
