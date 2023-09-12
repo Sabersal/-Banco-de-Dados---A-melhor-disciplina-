@@ -1,0 +1,1 @@
+SELECT nome_do_autor FROM sua_tabela_de_autores WHERE data_de_nascimento < '1900-01-01';
