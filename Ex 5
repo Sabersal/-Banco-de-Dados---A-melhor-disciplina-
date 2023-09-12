@@ -1,0 +1,3 @@
+SELECT p.nome_produto, SUM(v.preco_unitario) AS receita_total FROM vendas v
+JOIN produtos p ON v.produto_id = p.produto_id
+GROUP BY p.nome_produto;
