@@ -1,0 +1,2 @@
+SELECT l.titulo AS nome_livro, a.nome_autor AS nome_autor FROM livros l
+JOIN autores a ON l.autor_id = a.autor_id;
