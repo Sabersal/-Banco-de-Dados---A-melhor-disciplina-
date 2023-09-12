@@ -1,0 +1,2 @@
+SELECT curso, COUNT(*) AS numero_de_alunos FROM alunos
+GROUP BY curso;
