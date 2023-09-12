@@ -1,0 +1,3 @@
+SELECT Alunos.nome_aluno, Cursos.nome_curso FROM Alunos
+JOIN Matriculas ON Alunos.aluno_id = Matriculas.aluno_id
+JOIN Cursos ON Matriculas.curso_id = Cursos.curso_id;
