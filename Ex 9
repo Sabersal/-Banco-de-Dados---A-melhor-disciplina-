@@ -1,0 +1,7 @@
+SELECT p.nome AS nome_produto ,SUM(v.receita) AS receita_total FROM vendas v
+JOIN
+    produtos p ON v.produto_id = p.id
+GROUP BY
+    p.nome
+HAVING
+    SUM(v.receita) > 10000;
