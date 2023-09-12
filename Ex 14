@@ -1,0 +1,2 @@
+SELECT Cursos.nome_curso, Alunos.nome_aluno FROM Cursos
+RIGHT JOIN Alunos ON Cursos.curso_id = Alunos.curso_id;
