@@ -1,0 +1,2 @@
+SELECT Autores.nome AS NomeAutor, Livros.titulo AS TituloLivro FROM Autores
+LEFT JOIN Livros ON Autores.id = Livros.autor_id;
