@@ -1,0 +1,4 @@
+SELECT p.nome_produto AS Produto, SUM(v.quantidade * v.preco_unitario) AS ReceitaTotal FROM Produtos p
+LEFT JOIN Vendas v ON p.produto_id = v.produto_id
+GROUP BY p.nome_produto
+ORDER BY ReceitaTotal
