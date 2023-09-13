@@ -1,4 +1,4 @@
 SELECT Autores.nome AS NomeAutor, COUNT(Livros.id) AS QuantidadeLivros FROM Autores
 LEFT JOIN Livros ON Autores.id = Livros.autor_id
 GROUP BY Autores.nome
-ORDER BY QuantidadeLivros
+ORDER BY QuantidadeLivros;
