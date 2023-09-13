@@ -1,0 +1,3 @@
+SELECT Alunos.nome_aluno AS NomeAluno, COUNT(Matriculas.matricula_id) AS TotalMatriculas FROM Alunos
+LEFT JOIN Matriculas ON Alunos.aluno_id = Matriculas.aluno_id
+GROUP BY Alunos.nome_aluno;
