@@ -1,0 +1,3 @@
+SELECT produto_id, COUNT(*) AS QuantidadeTransacoes FROM Vendas
+GROUP BY produto_id
+ORDER BY QuantidadeTransacoes;
