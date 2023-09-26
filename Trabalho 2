@@ -1,0 +1,160 @@
+Ex 1:
+DELIMITER ??
+CREATE PROCEDURE listando_autoures()
+BEGIN
+    SELECT nome, sobrenome FROM Autor;
+END
+??
+DELIMITER ;
+
+CALL listando_autoures();
+
+Ex 2:
+DELIMITER //
+CREATE PROCEDURE categoria_dos_livros (IN p_categoria varchar(100))
+BEGIN
+    SELECT titulo FROM Livro 
+    WHERE Categoria_ID = (SELECT Categoria_ID FROM Categoria 
+    WHERE Nome = p_categoria);
+END
+//
+DELIMITER ;
+CALL sp_LivrosPorCategoria("Romance");
+CALL sp_LivrosPorCategoria("Autoajuda");
+CALL sp_LivrosPorCategoria("Ficção Científica"
+
+Ex 3:
+DELIMITER //
+CREATE PROCEDURE sp_LivrosPorCategoria(IN p_categoria varchar(100))
+BEGIN
+    SELECT Categoria_ID AS ID_DA_CATEGÓRIA , COUNT(*) AS QUANTIDADE_DE_LIVROS FROM Livro 
+    WHERE Categoria_ID = (SELECT Categoria_ID FROM Categoria 
+    WHERE Nome = p_categoria) GROUP BY Categoria_ID ORDER BY COUNT(Categoria_ID);
+END
+//
+
+DELIMITER ;
+drop procedure sp_LivrosPorCategoria;
+CALL sp_LivrosPorCategoria("Autoajuda");
+
+Ex 4:
+DELIMITER //
+
+CREATE PROCEDURE sp_VerificarLivrosCategoria(IN categoria_nome VARCHAR(255), OUT categoria_tem_livros INT)
+BEGIN
+    DECLARE categoria_id INT;
+    SELECT id INTO categoria_id FROM categorias WHERE nome = categoria_nome;
+    SELECT COUNT(*) INTO categoria_tem_livros FROM livros WHERE categoria_id = categoria_id;
+    IF categoria_tem_livros > 0 THEN
+        SET categoria_tem_livros = 1;
+    ELSE
+        SET categoria_tem_livros = 0;
+    END IF;
+END //
+DELIMITER ;
+
+Ex 5:
+DELIMITER //
+CREATE PROCEDURE sp_LivrosAteAno(IN p_lpano INT)
+  BEGIN
+    SELECT Titulo, Ano_Publicacao FROM Livro
+    WHERE Ano_Publicacao <= p_lpano;
+    END
+//
+DELIMITER ;
+CALL sp_LivrosAteAno(2004);
+drop procedure sp_LivrosAteAno;
+
+
+Ex 6:
+DELIMITER //
+CREATE PROCEDURE categoria_dos_livros (IN p_categoria varchar(100))
+BEGIN
+    SELECT titulo FROM Livro 
+    WHERE Categoria_ID = (SELECT Categoria_ID FROM Categoria 
+    WHERE Nome = p_categoria);
+END
+//
+DELIMITER ;
+CALL sp_LivrosPorCategoria("Romance");
+CALL sp_LivrosPorCategoria("Autoajuda");
+CALL sp_LivrosPorCategoria("Ficção Científica");
+
+Ex 7:
+DELIMITER //
+
+CREATE PROCEDURE sp_AdicionarLivro(
+    IN p_Titulo VARCHAR(255),
+    IN p_Autor VARCHAR(255),
+    IN p_AnoPublicacao INT
+)
+BEGIN
+    DECLARE livro_id INT;
+    SELECT id INTO livro_id FROM Livro WHERE Titulo = p_Titulo;
+    IF livro_id IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Livro com o mesmo título já existe.';
+    ELSE
+        INSERT INTO Livro (Titulo, Autor, AnoPublicacao)
+        VALUES (p_Titulo, p_Autor, p_AnoPublicacao);
+    END IF;
+END //
+
+DELIMITER ;
+
+
+Ex 8:
+DELIMITER //
+
+CREATE PROCEDURE sp_AutorMaisAntigo()
+BEGIN
+    DECLARE v_AutorMaisAntigo VARCHAR(255);
+    DECLARE v_DataNascimentoMaisAntiga DATE;
+    
+    SET v_AutorMaisAntigo = NULL;
+    SET v_DataNascimentoMaisAntiga = NULL;
+    SELECT Nome, DataNascimento
+    INTO v_AutorMaisAntigo, v_DataNascimentoMaisAntiga
+    FROM Autor
+    WHERE DataNascimento IS NOT NULL
+    ORDER BY DataNascimento ASC
+    LIMIT 1;
+    SELECT v_AutorMaisAntigo AS AutorMaisAntigo;
+END //
+
+DELIMITER ;
+
+Ex 9:
+DELIMITER //
+
+CREATE PROCEDURE sp_AdicionarLivro(
+    IN p_Titulo VARCHAR(255),       
+    IN p_Autor VARCHAR(255),        
+    IN p_AnoPublicacao INT            
+)
+BEGIN
+    DECLARE livro_id INT;           
+    SELECT id INTO livro_id FROM Livro WHERE Titulo = p_Titulo;
+    
+    IF livro_id IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Livro com o mesmo título já existe.';
+    ELSE
+        INSERT INTO Livro (Titulo, Autor, AnoPublicacao)
+        VALUES (p_Titulo, p_Autor, p_AnoPublicacao);
+    END IF;
+    
+END //
+DELIMITER ;
+
+Ex 10:
+DELIMITER //
+
+CREATE PROCEDURE sp_LivrosESeusAutores()
+BEGIN
+    SELECT Livro.Titulo, CONCAT(Autor.Nome, ' ', Autor.Sobrenome) AS NomeAutor
+    FROM Livro
+    JOIN LivroAutor ON Livro.id = LivroAutor.Livro_id
+    JOIN Autor ON LivroAutor.Autor_id = Autor.id;
+END //
+DELIMITER ;
